@@ -1,0 +1,72 @@
+\documentclass[UTF8,zihao=-4]{ctexart}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{siunitx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\geometry{a4paper,centering,scale=0.8}
+\setCJKfamilyfont{namekai}{AR PL UKai CN}
+\title{\heiti 计算机体系结构\quad 第一次作业}
+\author{\CJKfamily{namekai} PB17000005\quad 赵作竑}
+\date{\kaishu \today}
+\begin{document}
+	\maketitle
+	\begin{itemize}
+		\item[1.1] 根据摩尔定律，芯片上集成的晶体管的数目，每隔18个月就翻一番。从2005年到2025年，一共是$2025-2005=20$年$=20\times 12=240$个月。晶体管数目翻了$240\div 18=13.33$番，也就是$2^{13.33}=10321$倍。
+		\item[1.2] 20世纪90年代，硬件性能增长速率大概为每年52\%。2003年，Intel Xeon EE的性能是VAX 11/780的6043倍。从2003年到2025年，在这$2025-2003=22$年间，性能提升了$1.52^{22}=10013$倍，从而2025年的芯片性能是VAX 11/780的$6043\times 10013=60508559$倍。
+		\item[1.3] 当前的增长速率是每年22\%。2003年，Intel Xeon EE的性能是VAX 11/780的6043倍。从2003年到2025年，在这$2025-2003=22$年间，性能提升了$1.22^{22}=79$倍，从而2025年的芯片性能是VAX 11/780的$6043\times 79=477397$倍。
+		\item[1.4] 当我们从一种制造工艺转向另一种制造工艺时，晶体管的开关次数以及其开关频率的增高强于负载电容和电压的下降，从而导致功耗和能耗的总体上升。现在的处理器产生的热量已经达到风冷散热的极限。根据公式，
+		\begin{equation*}
+			\text{功率}_\text{动态}\varpropto 1/2\times \text{容性负载}\times \text{电压}^2\times \text{开关频率}
+		\end{equation*} 
+		如果不能降低电压或提高每个芯片的功率，则要减缓时钟频率的增长速度。电压已经在20年间从$\SI{5}{V}$下降到$\SI{1}{V}$以下了，因此频率难以继续增长。
+
+		架构师可以用多余的核心做更多的核心以提高并行程度、做GPU以提高图形性能、做更大的DRAM以提高访存速度等。
+		\item[1.5] 从2015年到2019年，这4年里，DRAM的容量增长了$(\SI{16}{Gbits}-\SI{8}{Gbits})/\SI{8}{Gbits}=50\%$，求解方程$(1+x)^4=1.5$，得到$x=10.67\%$。
+		\item[2.1] 由Amdahl定律，
+		\begin{equation*}
+			\text{总加速比}=\frac{1}{(1-\text{升级比例})+\frac{\text{升级比例}}{\text{升级加速比}}}=\frac{1}{(1-0.4)+\frac{0.4}{2}}=1.25
+		\end{equation*}
+		\item[2.2] 由Amdahl定律，
+		\begin{equation*}
+			\text{总加速比}=\frac{1}{(1-\text{升级比例})+\frac{\text{升级比例}}{\text{升级加速比}}}=\frac{1}{(1-0.99)+\frac{0.99}{2}}=1.98
+		\end{equation*}
+		\item[2.3] 之前已经算出，第一个应用程序并行化后的加速比为1.25，由Amdahl定律， 
+		\begin{equation*}
+			\text{总加速比}=\frac{1}{(1-\text{升级比例})+\frac{\text{升级比例}}{\text{升级加速比}}}=\frac{1}{(1-0.8)+\frac{0.8}{1.25}}=1.19
+		\end{equation*}
+		\item[2.4] 之前已经算出，第二个应用程序并行化后的加速比为1.98，由Amdahl定律， 
+		\begin{equation*}
+			\text{总加速比}=\frac{1}{(1-\text{升级比例})+\frac{\text{升级比例}}{\text{升级加速比}}}=\frac{1}{(1-0.2)+\frac{0.2}{1.98}}=1.11
+		\end{equation*}
+		\item[3.1]
+		\begin{eqnarray*}
+			\text{CPI} &= &\sum_{i=1}^4\left (\frac{\text{IC}_i}{\text{指令数}}\times \text{CPI}_i \right ) \\
+			&= &35\% \times 1 + 25\% \times 2 + 15\% \times 2 + 25\% \times 3 \\
+			&= &0.35 + 0.5 + 0.3 + 0.75 \\
+			&= &1.90
+		\end{eqnarray*} 
+		\item[3.2]
+		进行如此更改之后，伴随Load的ALU指令占原指令的比例为$35\%\times 35\% = 12.25\%$。因此，进行更改后的总指令数目为原指令数目的$100\%-12.25\%=87.75\%$。更改后，伴随Load的ALU占的比例为$12.25\% \div 87.75\% = 13.96\%$；不伴随Load的ALU指令占的比例为$(35\%-12.25\%) \div 87.75\% = 25.93\%$；不伴随ALU的Load指令占的比例为$(25\%-12.25\%)\div87.75\%=14.53\%$；Store指令占的比例为$15\%\div87.75\%=17.09\%$；Branches指令占的比例为$25\%\div 87.75\%=28.49\%$。
+		\begin{eqnarray*}
+			\text{CPI} &= &13.96\% \times 1 + 25.93\% \times 1 + 14.53\% \times 2 + 17.09\% \times 2 + 28.49 \times 5 \\
+			&=& 0.1396 + 0.2593 + 0.2906 + 0.3418 + 1.4245 \\
+			&=& 2.46
+		\end{eqnarray*} 
+		\item[3.3] 我们知道，
+		\begin{equation*}
+			\text{CPU时间}=\text{指令数}\times \text{CPI} \times \text{时钟周期时间}
+		\end{equation*} 
+		因此，我们有
+		\begin{eqnarray*}
+			\text{CPU时间}_1 &= &\text{指令数}_1\times \text{CPI}_1 \times \text{时钟周期时间}_1 \\
+			&= &1 \times 1.90 \times 1 \\
+			&= &1.90 \\
+			\text{CPU时间}_2 &= &\text{指令数}_2\times \text{CPI}_2 \times \text{时钟周期时间}_2 \\
+			&= &0.8775 \times 2.46 \times 1.2 \\
+			&= &2.59
+		\end{eqnarray*} 
+		由于 $1.90 < 2.59$，我们知道旧版本的CPU执行时间更短。
+	\end{itemize}
+\end{document}
